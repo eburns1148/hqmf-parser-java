@@ -1,0 +1,59 @@
+apply plugin: 'java'
+apply plugin: 'groovy'
+apply plugin: 'eclipse'
+
+group = 'com.javapda.hqmf.parser.groovy'
+version = '0.0.1'
+
+description = """HQMF Parser with Java Library"""
+
+jar {
+  manifest {
+	attributes "Main-Class": "com.javapda.hqmf.QualityMeasureDocumentMain"
+  }
+
+  from {
+	configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+  }
+}
+
+
+sourceSets {
+	main {
+		groovy {
+			srcDirs += ['src/main/java']
+		}
+		java {
+			srcDirs = []
+		}
+		resources {
+			srcDirs = ['src/main/resources']
+		}
+	}
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+
+tasks.withType(JavaCompile) {
+	options.encoding = 'UTF-8'
+}
+
+
+
+repositories {
+        
+     maven { url "http://repo.maven.apache.org/maven2" }
+}
+dependencies {
+    compile group: 'commons-lang', name: 'commons-lang', version:'2.5'
+    compile group: 'joda-time', name: 'joda-time', version:'2.8'
+    compile(group: 'org.codehaus.groovy', name: 'groovy-all', version:'2.3.10') {
+		exclude(module: 'junit')
+    }
+    compile group: 'commons-codec', name: 'commons-codec', version:'1.4'
+    compile group: 'log4j', name: 'log4j', version:'1.2.17'
+    compile group: 'commons-io', name: 'commons-io', version:'2.4'
+    testCompile group: 'junit', name: 'junit', version:'4.11'
+}
